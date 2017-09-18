@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <title></title>
+    <script src="vue.js"></script>
+    <script>
+        // demo data
+        var data = {
+            name: 'My Tree',
+            children: [
+                { name: 'hello' },
+                { name: 'wat' },
+                {
+                    name: 'child folder',
+                    children: [
+                        {
+                            name: 'child folder',
+                            children: [
+                                { name: 'hello' },
+                                { name: 'wat' }
+                            ]
+                        },
+                        { name: 'hello' },
+                        { name: 'wat' },
+                        {
+                            name: 'child folder',
+                            children: [
+                                { name: 'hello' },
+                                { name: 'wat' }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    </script>
+</head>
+
+<body>
+
+    <ul id="demo">
+        <item class="item" :model="treeData">
+        </item>
+    </ul>
+    <template id="mytemplate">
+        <li>
+            <div v-bind:class="{bold:isFolder}">
+
+            </div>
+        </li>
+        <ul v-show="open" v-if="isFolder">
+                <item
+                  class="item"
+                  v-for="model in model.children"
+                  :model="model">
+                </item>
+                <li class="add" @click="addChild">+</li>
+              </ul>
+    </template>
+    <script>
+        Vue.component('item', {
+            template: '#mytemplate',
+            props: {
+                model: Object
+            },
+            computed: {
+                isFolder: function () {
+                    return this.model.children && this.model.children.length;
+                }
+            }
+        });
+        var demo = new Vue({
+            el: "#demo",
+            data: {
+                treeData: data
+            }
+        });
+    </script>
+</body>
+
+</html>
